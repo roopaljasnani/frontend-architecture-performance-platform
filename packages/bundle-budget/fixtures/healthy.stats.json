@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-10-30T00:00:00.000Z",
+  "maxAssetGzipBytes": 150000,
+  "routes": [
+    {
+      "routeId": "shell",
+      "owner": "platform",
+      "assets": [
+        { "file": "shell.js", "gzipBytes": 52000, "rawBytes": 150000 }
+      ],
+      "packages": [
+        { "name": "react", "version": "18.3.1", "gzipBytes": 11000, "chunkId": "vendor-react" },
+        { "name": "react-dom", "version": "18.3.1", "gzipBytes": 42000, "chunkId": "vendor-react-dom" }
+      ]
+    },
+    {
+      "routeId": "catalog",
+      "owner": "design-system",
+      "assets": [
+        { "file": "catalog.js", "gzipBytes": 74000, "rawBytes": 210000 }
+      ],
+      "packages": [
+        { "name": "react", "version": "18.3.1", "gzipBytes": 11000, "chunkId": "vendor-react" }
+      ]
+    }
+  ],
+  "policies": [
+    { "routeId": "shell", "maxGzipBytes": 80000 },
+    { "routeId": "catalog", "maxGzipBytes": 120000 }
+  ]
+}

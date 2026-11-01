@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "baseUrl": ".",
+    "paths": {
+      "platform-tokens": ["packages/tokens/src/index.ts"],
+      "platform-vitals": ["packages/vitals/src/index.ts"],
+      "platform-bundle-budget": ["packages/bundle-budget/src/index.ts"],
+      "platform-profiler": ["packages/profiler/src/index.ts"],
+      "platform-a11y": ["packages/a11y/src/index.ts"],
+      "platform-modules": ["packages/modules/src/index.ts"],
+      "platform-ui": ["packages/ui/src/index.ts"],
+      "platform-data": ["packages/data/src/index.ts"]
+    }
+  },
+  "include": ["packages", "apps", "benchmarks", "scripts"]
+}

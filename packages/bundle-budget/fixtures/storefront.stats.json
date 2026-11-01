@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-10-30T00:00:00.000Z",
+  "maxAssetGzipBytes": 150000,
+  "routes": [
+    {
+      "routeId": "shell",
+      "owner": "platform",
+      "assets": [
+        { "file": "shell.js", "gzipBytes": 48000, "rawBytes": 142000 },
+        { "file": "shell.css", "gzipBytes": 6000, "rawBytes": 18000 }
+      ],
+      "packages": [
+        { "name": "react", "version": "18.3.1", "gzipBytes": 11000, "chunkId": "vendor-react" },
+        { "name": "react-dom", "version": "18.3.1", "gzipBytes": 42000, "chunkId": "vendor-react-dom" }
+      ]
+    },
+    {
+      "routeId": "catalog",
+      "owner": "design-system",
+      "assets": [
+        { "file": "catalog.js", "gzipBytes": 96000, "rawBytes": 280000 }
+      ],
+      "packages": [
+        { "name": "react", "version": "18.3.1", "gzipBytes": 11000, "chunkId": "vendor-react" },
+        { "name": "lodash", "version": "4.17.21", "gzipBytes": 24000, "chunkId": "catalog-lodash" },
+        { "name": "date-fns", "version": "3.6.0", "gzipBytes": 18000, "chunkId": "catalog-date-fns" }
+      ]
+    },
+    {
+      "routeId": "vitals",
+      "owner": "performance",
+      "assets": [
+        { "file": "vitals.js", "gzipBytes": 64000, "rawBytes": 190000 }
+      ],
+      "packages": [
+        { "name": "react", "version": "18.3.1", "gzipBytes": 11000, "chunkId": "vendor-react" }
+      ]
+    },
+    {
+      "routeId": "checkout",
+      "owner": "payments",
+      "assets": [
+        { "file": "checkout.js", "gzipBytes": 188000, "rawBytes": 540000 }
+      ],
+      "packages": [
+        { "name": "react", "version": "18.3.1", "gzipBytes": 11000, "chunkId": "vendor-react" },
+        { "name": "lodash", "version": "4.17.21", "gzipBytes": 24000, "chunkId": "checkout-lodash" },
+        { "name": "date-fns", "version": "2.30.0", "gzipBytes": 22000, "chunkId": "checkout-date-fns" },
+        { "name": "moment", "version": "2.30.1", "gzipBytes": 49000, "chunkId": "checkout-moment" }
+      ]
+    }
+  ],
+  "policies": [
+    { "routeId": "shell", "maxGzipBytes": 80000 },
+    { "routeId": "catalog", "maxGzipBytes": 120000 },
+    { "routeId": "vitals", "maxGzipBytes": 90000 },
+    { "routeId": "checkout", "maxGzipBytes": 160000 }
+  ]
+}

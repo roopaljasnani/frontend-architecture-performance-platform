@@ -1,0 +1,230 @@
+:root {
+  --sans: "Public Sans", "Avenir Next", "Segoe UI", sans-serif;
+  --serif: "Newsreader", "Iowan Old Style", Palatino, serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+html[data-theme='dark'] { color-scheme: dark; }
+html[data-theme='light'] { color-scheme: light; }
+
+* { box-sizing: border-box; }
+
+html,
+body,
+#root { min-height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--platform-bg);
+  color: var(--platform-text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+button,
+input,
+select { font: inherit; color: inherit; }
+
+.app {
+  display: grid;
+  grid-template-columns: 268px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.rail {
+  background: var(--platform-bg-sunken);
+  border-right: 1px solid var(--platform-line);
+  padding: 1.25rem 0.9rem 1.5rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.brand h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 2.7rem;
+  font-weight: 560;
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+}
+
+.brand p {
+  margin: 0.55rem 0 0;
+  color: var(--platform-muted);
+  font-size: 0.92rem;
+}
+
+.rail nav {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.rail button {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+  color: var(--platform-text);
+  padding: 0.48rem 0.55rem;
+  cursor: pointer;
+}
+
+.rail button[aria-current='page'] {
+  border-left-color: var(--platform-accent);
+  background: var(--platform-bg-selected);
+}
+
+.theme-control {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--platform-muted);
+}
+
+.theme-control select {
+  font: inherit;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--platform-text);
+  background: transparent;
+  border: 1px solid var(--platform-line);
+  padding: 0.28rem 0.4rem;
+}
+
+.nav-index {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--platform-muted);
+}
+
+.workspace {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.topbar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid var(--platform-line);
+}
+
+.topbar p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--platform-muted);
+}
+
+.topbar-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.env {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--platform-accent);
+  border: 1px solid var(--platform-line);
+  padding: 0.28rem 0.5rem;
+}
+
+.canvas {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.screen-head {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.screen-head h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 560;
+  font-size: clamp(2.1rem, 4vw, 3.3rem);
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  max-width: 18ch;
+}
+
+.lede {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--platform-muted);
+}
+
+.button-row,
+.inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.status-line {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .rail {
+    position: static;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--platform-line);
+  }
+  .rail nav {
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;
+  }
+  .rail button { width: auto; white-space: nowrap; }
+  .canvas, .topbar { padding-left: 1rem; padding-right: 1rem; }
+}
+
+.adr-doc {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.adr-doc h4 {
+  margin: 0.35rem 0 0;
+  font-size: 0.95rem;
+}
+
+.adr-doc p,
+.adr-doc li {
+  margin: 0;
+}
+
+.adr-doc a {
+  color: var(--platform-accent);
+}

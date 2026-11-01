@@ -1,0 +1,14 @@
+# Illustrative ownership map for a multi-team frontend platform.
+# Replace the handles with real teams before this pattern is used in production.
+
+*                                   @platform
+/packages/ui/                       @design-system
+/packages/tokens/                   @design-system
+/packages/vitals/                   @performance
+/packages/profiler/                 @performance
+/packages/bundle-budget/            @performance
+/packages/a11y/                     @accessibility
+/packages/modules/                  @platform
+/docs/adr/                          @platform
+/apps/platform/src/screens/bundles.tsx      @performance
+/apps/platform/src/screens/accessibility.tsx @accessibility

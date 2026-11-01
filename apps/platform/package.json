@@ -1,0 +1,27 @@
+{
+  "name": "platform-shell",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "platform-a11y": "0.0.0",
+    "platform-bundle-budget": "0.0.0",
+    "platform-modules": "0.0.0",
+    "platform-profiler": "0.0.0",
+    "platform-tokens": "0.0.0",
+    "platform-ui": "0.0.0",
+    "platform-data": "0.0.0",
+    "platform-vitals": "0.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.3",
+    "vite": "^5.4.10"
+  }
+}

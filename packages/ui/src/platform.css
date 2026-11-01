@@ -1,0 +1,306 @@
+.platform-button,
+.platform-field input,
+.platform-field select {
+  font: inherit;
+  color: inherit;
+}
+
+.platform-button {
+  border: 1px solid var(--platform-line);
+  background: transparent;
+  color: var(--platform-text);
+  border-radius: 2px;
+  padding: 0.55rem 0.8rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.platform-button:focus-visible,
+.platform-field input:focus-visible,
+.platform-field select:focus-visible,
+.rail button:focus-visible,
+.skip-link:focus {
+  outline: 2px solid var(--platform-accent);
+  outline-offset: 2px;
+}
+
+.platform-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.platform-button-primary {
+  background: var(--platform-accent);
+  color: var(--platform-accent-ink);
+  border-color: var(--platform-accent);
+  font-weight: 600;
+}
+
+.platform-button-danger {
+  border-color: var(--platform-poor);
+  color: var(--platform-poor);
+}
+
+.platform-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.platform-panel {
+  border: 1px solid var(--platform-line);
+  background: var(--platform-bg-raised);
+  padding: 1rem 1rem 1.1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.platform-panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.platform-panel-head h3,
+.screen-head h2,
+.brand h1 {
+  font-family: var(--serif);
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.platform-panel-head h3 {
+  font-size: 1.35rem;
+}
+
+.platform-kicker {
+  margin: 0 0 0.25rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--platform-muted);
+}
+
+.platform-muted {
+  margin: 0;
+  color: var(--platform-muted);
+  line-height: 1.45;
+}
+
+.platform-metric {
+  border-top: 2px solid var(--platform-line);
+  padding-top: 0.7rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.platform-metric.tone-good { border-top-color: var(--platform-good); }
+.platform-metric.tone-watch { border-top-color: var(--platform-watch); }
+.platform-metric.tone-poor { border-top-color: var(--platform-poor); }
+
+.platform-metric-value {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 1.55rem;
+  letter-spacing: -0.04em;
+}
+
+.platform-budget {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.platform-budget-label,
+.platform-split {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.platform-budget-label .platform-mono {
+  white-space: nowrap;
+}
+
+.platform-mono {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+
+.platform-budget-track {
+  height: 8px;
+  background: var(--platform-bg-sunken);
+  border: 1px solid var(--platform-line);
+}
+
+.platform-budget-fill {
+  height: 100%;
+}
+
+.platform-budget-fill.tone-good { background: var(--platform-good); }
+.platform-budget-fill.tone-watch { background: var(--platform-watch); }
+.platform-budget-fill.tone-poor { background: var(--platform-poor); }
+
+.platform-window {
+  overflow: auto;
+  border: 1px solid var(--platform-line);
+  background: var(--platform-bg-sunken);
+}
+
+.platform-window-row {
+  display: grid;
+  align-items: center;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--platform-line);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.doc-link {
+  color: var(--platform-accent);
+  text-underline-offset: 0.18em;
+}
+
+.platform-hidden,
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  width: auto;
+  height: auto;
+  margin: 0;
+  clip: auto;
+  padding: 0.6rem 0.8rem;
+  background: var(--platform-accent);
+  color: var(--platform-accent-ink);
+  z-index: 5;
+}
+
+.platform-field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+}
+
+.platform-field input,
+.platform-field select {
+  background: var(--platform-bg-sunken);
+  border: 1px solid var(--platform-line);
+  border-radius: 2px;
+  padding: 0.55rem 0.65rem;
+  width: 100%;
+}
+
+.platform-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.platform-table th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--platform-muted);
+  font-weight: 500;
+}
+
+.platform-table th,
+.platform-table td {
+  padding: 0.55rem 0.4rem;
+  border-bottom: 1px solid var(--platform-line);
+  vertical-align: baseline;
+}
+
+.finding {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--platform-line);
+}
+
+.finding strong {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.sev-error { color: var(--platform-poor); }
+.sev-warning { color: var(--platform-watch); }
+.sev-good { color: var(--platform-good); }
+
+.failure {
+  border: 1px solid var(--platform-poor);
+  padding: 1rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.platform-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 10, 7, 0.72);
+  display: grid;
+  place-items: center;
+  z-index: 20;
+  padding: 1rem;
+}
+
+.platform-dialog {
+  width: min(32rem, 100%);
+  background: var(--platform-bg-raised, var(--platform-bg));
+  color: var(--platform-text);
+  border: 1px solid var(--platform-line);
+  padding: 1.1rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.platform-dialog h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+}
+
+.platform-dialog-wide {
+  width: min(46rem, 100%);
+  max-height: min(85vh, 48rem);
+  overflow: auto;
+}
+
+.grid-3,
+.grid-2,
+.form-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.form-grid { grid-template-columns: 1.2fr 1fr 1.4fr auto; align-items: end; }
+
+@media (max-width: 900px) {
+  .grid-3,
+  .grid-2,
+  .form-grid { grid-template-columns: 1fr; }
+}
