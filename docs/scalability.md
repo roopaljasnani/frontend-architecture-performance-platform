@@ -12,6 +12,8 @@ This platform scales across teams by keeping the runtime shared and the ownershi
 
 A new team does not get a new design system. They get a module id and a budget. If their surface cannot live inside the shell's React major, that is a product boundary, not a reason to fork React.
 
+`packages/catalog-product` is that boundary inside this repo. It has its own registry (browse and search) and it uses the shell's React 18, tokens, contrast check, vitals gate, and gzip gate. The overview page runs that report. It is a second product in the repository, not a second deployment.
+
 ## Frontend scale
 
 - **Route count.** The bundle analyzer is pure and is exercised at 300 routes in the harness. The gate stays in CI rather than moving to a nightly job that people ignore.

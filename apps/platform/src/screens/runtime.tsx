@@ -1,9 +1,9 @@
 import { labInpPhases, phaseTotal, dominantPhase } from 'platform-vitals';
 import { summarizeMainThread, summarizeRenders, totalBlockingTime, ProfiledRegion, observeLongTasks, sampleFrames, scanBlocking, scanSliced, type LongTask, type RenderSample, type ScanResult } from 'platform-profiler';
-import { Button, DocLink, Metric, Panel, WindowedList, visibleRange } from 'platform-ui';
+import { Button, DocLink, Metric, Panel, WindowedList, mountCost, referenceList } from 'platform-ui';
 import { memo, useCallback, useEffect, useRef, useState, useTransition, type ReactNode } from 'react';
 
-const spans = Array.from({ length: 4000 }, (_, index) => ({
+const spans = Array.from({ length: referenceList.itemCount }, (_, index) => ({
   id: `span-${index}`,
   owner: ['catalog', 'checkout', 'vitals', 'shell'][index % 4] ?? 'shell',
   duration: 4 + (index % 37),
@@ -49,8 +49,8 @@ const ProfiledSpans = memo(function ProfiledSpans({
       <SlowList slowToken={slowToken}>
         <WindowedList
           items={filtered}
-          rowHeight={28}
-          height={280}
+          rowHeight={referenceList.rowHeight}
+          height={referenceList.viewportHeight}
           getKey={(item) => item.id}
           onRange={(range) => onMounted(range.end - range.start)}
           renderRow={(item, index) => `${String(index).padStart(4, '0')}  ${item.id}  ${item.owner}  ${item.duration} ms`}
@@ -77,12 +77,12 @@ export default function RuntimeScreen() {
   const samples = useRef<RenderSample[]>([]);
   const [tasks, setTasks] = useState<LongTask[]>(preset);
   const [stallMs, setStallMs] = useState('80');
-  const [mounted, setMounted] = useState(() => visibleRange({
+  const [mounted, setMounted] = useState(() => mountCost({
     itemCount: spans.length,
-    rowHeight: 28,
-    viewportHeight: 280,
-    scrollTop: 0,
-  }).end);
+    rowHeight: referenceList.rowHeight,
+    viewportHeight: referenceList.viewportHeight,
+    scrollTop: referenceList.scrollTop,
+  }).mounted);
   const [summary, setSummary] = useState(() => summarizeRenders([]));
   const [generation, setGeneration] = useState(0);
   const [query, setQuery] = useState('');
@@ -98,9 +98,20 @@ export default function RuntimeScreen() {
   const [ticks, setTicks] = useState(0);
   const ticksRef = useRef(0);
   const alive = useRef(true);
+  const [windowedCommit, setWindowedCommit] = useState(0);
+  const [fullCommit, setFullCommit] = useState<number | null>(null);
+  const [mountingFull, setMountingFull] = useState(false);
+  const fullRecorded = useRef(false);
   const onSample = useCallback((sample: RenderSample) => {
     samples.current = [...samples.current.slice(-30), sample];
     setSummary(summarizeRenders(samples.current));
+    if (sample.id === 'span-list') setWindowedCommit(sample.actualDuration);
+  }, []);
+  const onFullSample = useCallback((sample: RenderSample) => {
+    if (fullRecorded.current || sample.phase !== 'mount') return;
+    fullRecorded.current = true;
+    setFullCommit(sample.actualDuration);
+    setMountingFull(false);
   }, []);
   const onMounted = useCallback((count: number) => setMounted(count), []);
   const onMatched = useCallback((count: number) => setMatched(count), []);
@@ -268,6 +279,34 @@ export default function RuntimeScreen() {
         <p className="status-line">{frameReport}</p>
       </Panel>
       <Panel kicker="Windowing" title="Span list" action={<span className="platform-mono">p95 commit {summary.p95ActualMs.toFixed(1)} ms</span>}>
+        <p className="platform-muted">
+          Mount every row once builds all 4,000 rows, records that React commit, and then removes them. The list below stays windowed.
+        </p>
+        <div className="button-row">
+          <Button
+            onClick={() => {
+              fullRecorded.current = false;
+              setMountingFull(true);
+            }}
+            disabled={mountingFull}
+          >
+            Mount every row once
+          </Button>
+        </div>
+        <p className="status-line" role="status">
+          {fullCommit === null
+            ? 'No full mount yet.'
+            : `Full list commit ${fullCommit.toFixed(1)} ms for ${spans.length} rows. Windowed list commit ${windowedCommit.toFixed(1)} ms for ${mounted} rows.`}
+        </p>
+        {mountingFull ? (
+          <ProfiledRegion id="full-list" onSample={onFullSample}>
+            <div hidden>
+              {spans.map((span) => (
+                <div key={span.id}>{span.id}</div>
+              ))}
+            </div>
+          </ProfiledRegion>
+        ) : null}
         <ProfiledSpans
           generation={generation}
           query={listQuery}

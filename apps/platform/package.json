@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "platform-a11y": "0.0.0",
+    "platform-catalog": "0.0.0",
     "platform-bundle-budget": "0.0.0",
     "platform-modules": "0.0.0",
     "platform-profiler": "0.0.0",

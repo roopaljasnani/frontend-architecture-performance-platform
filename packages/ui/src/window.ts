@@ -5,6 +5,26 @@ export interface VisibleRange {
   totalHeight: number;
 }
 
+/** The runtime page list. Both the screen and the adoption report use these numbers. */
+export const referenceList = {
+  itemCount: 4000,
+  rowHeight: 28,
+  viewportHeight: 280,
+  scrollTop: 0,
+} as const;
+
+export function mountCost(options: {
+  itemCount: number;
+  rowHeight: number;
+  viewportHeight: number;
+  scrollTop: number;
+  overscan?: number;
+}): { mounted: number; full: number; skipped: number } {
+  const range = visibleRange(options);
+  const mounted = range.end - range.start;
+  return { mounted, full: options.itemCount, skipped: options.itemCount - mounted };
+}
+
 export function visibleRange(options: {
   itemCount: number;
   rowHeight: number;

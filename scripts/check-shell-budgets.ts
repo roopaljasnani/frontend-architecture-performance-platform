@@ -1,7 +1,7 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
-import { analyzeBundles, budgetGate, filesForModule, formatBytes, type ViteManifest } from 'platform-bundle-budget';
+import { analyzeBundles, budgetGate, filesForModule, formatBytes, sharedWire, type ViteManifest } from 'platform-bundle-budget';
 import { platformRegistry } from '../apps/platform/src/registry';
 
 const dist = path.resolve('apps/platform/dist');
@@ -50,4 +50,9 @@ if (!gate.ok) {
   process.exit(1);
 }
 
+const wire = sharedWire(routes);
+const body = `${JSON.stringify({ routes: wire.routes, sharedGzip: wire.sharedGzip, saved: wire.saved }, null, 2)}\n`;
+writeFileSync(path.resolve('apps/platform/public/shell-wire.json'), body);
+writeFileSync(path.join(dist, 'shell-wire.json'), body);
+console.log(`Shared files ${formatBytes(wire.sharedGzip)} on ${wire.routes} pages. Counting them on every page would add ${formatBytes(wire.saved)}.`);
 console.log('Shell bundle gate passed.');

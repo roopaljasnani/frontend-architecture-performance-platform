@@ -14,10 +14,10 @@ Run `npm install`, then `npm run dev`, and open `http://localhost:5173`.
 
 | Page | What you are looking at |
 | --- | --- |
-| Platform | The seven pages, who owns each one, and the size budget. Tab to a rail item and that page's file starts downloading before you open it. The top bar shows how long the import took. The React 17 row is a module the app refuses to register. The remote buttons do not call the network. They show a timeout and a bad payload. Crash the panel and the rail stays up. |
+| Platform | The seven pages, who owns each one, and the size budget. A second product in this repo, catalog, registers browse and search on the same React 18 and the same gates. Search ships on lab samples. Browse has none, so it is blocked. The panel also shows the runtime list mounting 18 of 4,000 rows, and the shared files from the last build, counted once. Tab to a rail item and that page's file starts downloading before you open it. The top bar shows how long the import took. The React 17 row is a module the app refuses to register. The remote buttons do not call the network. They show a timeout and a bad payload. Crash the panel and the rail stays up. |
 | Vitals | Largest Contentful Paint, Interaction to Next Paint, and Cumulative Layout Shift. The log at the top is what this browser recorded. Load the lab sample for the fixed release table. Draw 100 production samples and 10 are kept. A route with no samples is blocked. |
 | Bundles | A made-up storefront that fails its size budget on purpose. Checkout is too big, and one library is included twice. |
-| Runtime | What it costs to block the main thread, how long React spent rendering, and a list of 4,000 rows that only mounts the ones on screen. One scan holds the thread. The other gives it back between slices. |
+| Runtime | What it costs to block the main thread, how long React spent rendering, and a list of 4,000 rows that only mounts the ones on screen. Mount every row once records that commit and then removes the rows. One scan holds the thread. The other gives it back between slices. |
 | Data | A cache keyed by the route pattern, so a token in the query string is not part of the key. Race two responses and the slower one loses. Start polling and the second panel hears the same pulse on a `BroadcastChannel` without fetching it. Open `/data` in another window and that window hears it too. Fetch from the worker calls `fetch` on `/api/pulse`. The service worker stores that body and can serve it again. |
 | Accessibility | A short list of checks for names, headings, and contrast. It is not a WCAG audit. Open the route dialog, save a note, and the note stays on the page. Check "Fail this save" and the previous note comes back. |
 | Decisions | The choices already made, the options that were turned down, and the cost. Read ADR opens the full note from [`docs/adr`](docs/adr). |
@@ -93,14 +93,14 @@ The shell is at `http://localhost:5173`.
 | --- | --- |
 | Core Web Vitals | LCP, INP, and CLS, including thresholds, session windows, route templates, a browser observer that records the visit, a 10% production draw, and a release block when a sample is missing. |
 | Supporting timings | FCP and TTFB are rated and stored. They do not block a release. FID is retired; INP replaced it, and FID is not calculated. |
-| Performance | Code-split modules, an import that starts when you focus a rail item, long-task blocking time, React commit cost, a windowed list, a deferred filter, a blocking scan, and the same scan sliced across turns. |
+| Performance | Code-split modules, an import that starts when you focus a rail item, long-task blocking time, React commit cost, a windowed list that mounts 18 of 4,000 rows, one commit of all 4,000 rows beside it, the last build's shared files counted once, a deferred filter, a blocking scan, and the same scan sliced across turns. |
 | Scheduling | `requestAnimationFrame` gaps, with a gap over 20ms counted as a missed 60Hz frame. Browser long tasks are counted beside the lab blocking-time formula. |
 | Optimization | LCP and INP are split into phases. The longest phase is the change to make. A React commit is not treated as INP. |
 | SEO | Document title, path, and canonical follow the module. Tokens stay out of the URL. There is no prerender. A crawler that does not run JavaScript receives the shell document only. |
 | Theme | Light and dark share token names. `system` follows the OS. The choice is stored and applied before paint. Both palettes pass the contrast contract. |
 | Accessibility | Names, labels, headings, landmarks, contrast, focus on module change, a status announcement, and a dialog focus trap. This is not axe-core and not a screen-reader pass. |
 | Data | In-memory cache keyed by route template. Pending, stale, fresh, and error. A late response is ignored. An aborted refetch keeps the previous record. A poll uses that cache: one in-flight request, skip on overlap, backoff on error, pause when the tab is hidden. A `BroadcastChannel` copies a landed entry to another tab. A save paints immediately and restores the previous value if the write fails. A service worker answers `GET /api/pulse`, stores the body, and can serve or fail the next request. |
-| Modules and bundling | Build-time registry, one React major, a remote timeout and contract, a retryable chunk failure, route gzip budgets, duplicate majors on the stats fixture, and a gzip check of this shell's build. |
+| Modules and bundling | Build-time registry, one React major, a second product (`packages/catalog-product`) on that same major and the same contrast, vitals, and gzip gates, a remote timeout and contract, a retryable chunk failure, route gzip budgets, duplicate majors on the stats fixture, and a gzip check of this shell's build. |
 
 ## Layout
 
@@ -114,6 +114,7 @@ packages/vitals      LCP, INP, CLS, FCP, TTFB. Collector, budgets, browser adapt
 packages/bundle-budget   Route budgets, chunk-aware duplicates, CI gate.
 packages/profiler    Long-task blocking time, React commits, sliced scans, frame gaps.
 packages/a11y        Names, labels, headings, landmarks, contrast.
+packages/catalog-product   Second product. Own registry, same React, contrast, and gates.
 docs/adr             Decisions, rejected alternatives, trade-offs.
 ```
 

@@ -6,6 +6,8 @@ export { filesForModule, type ViteManifest, type ViteManifestChunk } from './man
 export {
   analyzeBundles,
   budgetGate,
+  sharedWire,
+  wireBytes,
   formatBytes,
   parseBundleStats,
   type Analysis,

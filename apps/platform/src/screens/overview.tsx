@@ -1,10 +1,17 @@
+import { adoptionReport } from 'platform-catalog';
 import { claimsFrom, isRemoteModuleContract, loadRemoteModule, resolveShared, type RemoteResult, type RemoteModuleContract } from 'platform-modules';
 import { DocLink, Button, Metric, Panel } from 'platform-ui';
-import { useState, useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { ModuleBoundary } from '../boundary';
 import { importTimings, subscribeImports } from '../imports';
 import { platformRegistry, rejectedLegacyModule } from '../registry';
 import { formatBytes } from 'platform-bundle-budget';
+
+interface ShellWire {
+  routes: number;
+  sharedGzip: number;
+  saved: number;
+}
 
 function MaybeCrash({ crash }: { crash: boolean }) {
   if (crash) throw new Error('Checkout module failed while reading route state.');
@@ -18,6 +25,21 @@ export default function Overview() {
   const [remote, setRemote] = useState<RemoteResult<RemoteModuleContract> | null>(null);
   const [crash, setCrash] = useState(false);
   const [epoch, setEpoch] = useState(0);
+  const adoption = adoptionReport(modules);
+  const [shellWire, setShellWire] = useState<ShellWire | null>(null);
+  useEffect(() => {
+    const url = new URL('shell-wire.json', document.baseURI);
+    let cancel = false;
+    fetch(url.href)
+      .then((response) => (response.ok ? response.json() as Promise<ShellWire> : null))
+      .then((data) => {
+        if (!cancel && data && typeof data.sharedGzip === 'number' && typeof data.saved === 'number') setShellWire(data);
+      })
+      .catch(() => {});
+    return () => {
+      cancel = true;
+    };
+  }, []);
   const timings = useSyncExternalStore(subscribeImports, importTimings, importTimings);
   const timingFor = new Map(timings.map((timing) => [timing.id, timing]));
 
@@ -51,6 +73,26 @@ export default function Overview() {
         <Metric label="Shared React" value={`v${accepted.resolved.find((item) => item.name === 'react')?.major ?? '—'}`} detail="One major, supplied by the shell" tone="good" />
         <Metric label="Rejected candidate" value={proposed.ok ? 'None' : 'React 17'} detail="legacy-checkout fails closed" tone="poor" />
       </div>
+      <Panel kicker="Second product" title="Two products, one platform">
+        <p className="platform-muted">
+          {`The shell registers ${adoption.shellModules} pages. The catalog product registers browse and search. Both ask for React ${adoption.reactMajor}. Both run the token contrast check, the vitals release gate, and the gzip budget. Search has lab samples inside those budgets, so it ships. Browse has no samples, so the gate blocks it.`}
+        </p>
+        <div className="grid-3">
+          <Metric label="Products" value="2" detail="Shell and catalog" tone={adoption.reactOk && adoption.contrastOk ? 'good' : 'poor'} />
+          <Metric label="Rows mounted" value={`${adoption.rowsMounted} of ${adoption.rowsFull}`} detail={`${adoption.rowsFull - adoption.rowsMounted} rows stay out of the document`} tone="good" />
+          <Metric
+            label="Shell chunk, once"
+            value={shellWire ? formatBytes(shellWire.saved) : '—'}
+            detail={shellWire ? `Saved against counting ${formatBytes(shellWire.sharedGzip)} on every page` : 'Loads shell-wire.json from the last build'}
+            tone="good"
+          />
+        </div>
+        <p className="platform-muted">
+          {shellWire
+            ? `The row count is the runtime list at rest. The last build measured ${formatBytes(shellWire.sharedGzip)} of files that all ${shellWire.routes} pages load. Counting those files on every page, then shipping each file once, is the saving above. It is the build in this repo. It is not a field change in load time.`
+            : 'The row count is the runtime list at rest. The shared-file size is shell-wire.json, written by npm run check:build. It is the build in this repo. It is not a field change in load time.'}
+        </p>
+      </Panel>
       <Panel kicker="While you click" title="What is actually running">
         <ul>
           <li>Focusing a rail page calls <code>import()</code> and records the time with <code>performance.measure</code>. The top bar is that measure.</li>

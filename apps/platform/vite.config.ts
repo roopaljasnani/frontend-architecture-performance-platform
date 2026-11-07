@@ -28,6 +28,7 @@ export default defineConfig({
       { find: /^platform-modules$/, replacement: path.resolve(repoRoot, 'packages/modules/src/index.ts') },
       { find: /^platform-ui$/, replacement: path.resolve(repoRoot, 'packages/ui/src/index.ts') },
       { find: /^platform-data$/, replacement: path.resolve(repoRoot, 'packages/data/src/index.ts') },
+      { find: /^platform-catalog$/, replacement: path.resolve(repoRoot, 'packages/catalog-product/src/index.ts') },
     ],
   },
   server: {

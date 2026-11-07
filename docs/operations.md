@@ -32,6 +32,8 @@ CI runs the analyzer. Errors fail the job: over budget, missing policy, duplicat
 
 Raising a budget is a reviewed edit to the stats policy. Do not add a hidden 10% tolerance in the analyzer. The Decisions route was raised from 60 KB to 64 KB gzip because the shared shell now keeps the browser vitals log. The decision notes themselves load as separate files when you open one, so they are not part of that number.
 
+`npm run check:build` also writes `apps/platform/public/shell-wire.json`: how many pages the build has, the gzip of the files that every page loads, and the bytes saved by shipping each of those files once. The Platform page fetches that file. Re-run the check after a build before quoting the number.
+
 ## Ownership
 
 `CODEOWNERS` is illustrative. Platform owns the shell, module runtime, and ADRs. Design system owns tokens and UI. Performance owns vitals, the profiler, and bundle budgets. Accessibility owns the contract package. Product modules own their screens and their screen-reader pass.

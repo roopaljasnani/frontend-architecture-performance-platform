@@ -126,6 +126,9 @@ describe('platform shell', () => {
     expect(screen.getByText('Rows mounted').parentElement?.textContent).toContain('18');
     expect(screen.getByText('of 4000 spans')).toBeTruthy();
     expect(screen.getByText(/React commits 1/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Mount every row once' }));
+    expect(await screen.findByText(/Full list commit \d+\.\d ms for 4000 rows/)).toBeTruthy();
+    expect(screen.getByText('Rows mounted').parentElement?.textContent).toContain('18');
     fireEvent.click(screen.getByRole('button', { name: 'Run stall' }));
     expect(screen.getByText('Blocking time').parentElement?.textContent).toContain('260 ms');
     fireEvent.click(screen.getByRole('button', { name: 'Commit a React update' }));

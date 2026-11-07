@@ -1,0 +1,18 @@
+{
+  "name": "platform-catalog",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "platform-a11y": "0.0.0",
+    "platform-bundle-budget": "0.0.0",
+    "platform-modules": "0.0.0",
+    "platform-tokens": "0.0.0",
+    "platform-ui": "0.0.0",
+    "platform-vitals": "0.0.0",
+    "react": "^18.3.1"
+  }
+}

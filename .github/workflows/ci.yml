@@ -41,6 +41,8 @@ jobs:
         run: npm run build
         env:
           VITE_BASE_PATH: ${{ github.event.repository.name == format('{0}.github.io', github.repository_owner) && '/' || format('/{0}/', github.event.repository.name) }}
+      - name: Record the shared shell size
+        run: npm run check:build
       - name: Add the Pages SPA fallback
         run: cp apps/platform/dist/index.html apps/platform/dist/404.html && touch apps/platform/dist/.nojekyll
       - uses: actions/upload-pages-artifact@v3

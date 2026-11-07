@@ -39,6 +39,9 @@ From this repo, on a developer machine:
 - Saving a note paints it immediately. A rejected write puts the previous note back.
 - A second cache on the same `BroadcastChannel` shows the pulse without fetching it. An older generation does not replace a newer one.
 - Fetch from the worker on the Data page calls `fetch('/api/pulse')`. The service worker stores the body, can serve that same body again, and the browser records a resource timing for the request.
+- A second product, `packages/catalog-product`, registers browse and search on the same React 18, the same contrast check, and the same release gate as the shell. Search has lab samples and ships. Browse has no samples, so it is blocked. A React 17 add-on on that registry is refused.
+- The runtime list is 4,000 rows. At rest the window mounts 18 of them. The other 3,982 are not in the document. Mount every row once commits all 4,000, records that React commit, and removes them. The windowed commit stays on the page beside it.
+- `npm run check:build` measures the files every page of this build loads and writes that gzip size into the Platform page. The page counts those files on all seven pages, then once. The difference is the saving from shipping each shared file a single time. It is this build, not a field change in load time.
 - Harness timings are in [benchmarks.md](benchmarks.md). Regenerate them with `npm run bench`. The built shell is checked with `npm run check:build`.
 
 ## Operating rules

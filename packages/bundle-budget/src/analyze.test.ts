@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { analyzeBundles, budgetGate, parseBundleStats } from './analyze';
+import { analyzeBundles, budgetGate, parseBundleStats, sharedWire } from './analyze';
 import { healthyFixture, storefrontFixture } from './index';
 
 const fixtures = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../fixtures');
@@ -53,5 +53,15 @@ describe('analyzeBundles', () => {
       maxAssetGzipBytes: healthyFixture.maxAssetGzipBytes,
     });
     expect(budgetGate(analysis).errors.map((finding) => finding.code)).toEqual(['MISSING_POLICY']);
+  });
+
+  it('counts a file that every route loads once', () => {
+    const wire = sharedWire([
+      { assets: [{ file: 'shell.js', gzipBytes: 53_000 }, { file: 'overview.js', gzipBytes: 4_000 }] },
+      { assets: [{ file: 'shell.js', gzipBytes: 53_000 }, { file: 'runtime.js', gzipBytes: 4_000 }] },
+    ]);
+    expect(wire.sharedGzip).toBe(53_000);
+    expect(wire.saved).toBe(53_000);
+    expect(wire.onceOnTheWire).toBe(61_000);
   });
 });

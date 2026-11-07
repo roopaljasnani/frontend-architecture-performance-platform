@@ -105,6 +105,51 @@ export function formatBytes(bytes: number): string {
   return `${(bytes / 1_000_000).toFixed(2)} MB`;
 }
 
+/** Bytes if every route carried its own copy of a shared file, against shipping each file once. */
+export function wireBytes(routes: readonly { assets: readonly { file: string; gzipBytes: number }[] }[]): {
+  countedOnEveryRoute: number;
+  onceOnTheWire: number;
+  saved: number;
+} {
+  const countedOnEveryRoute = routes.reduce(
+    (sum, route) => sum + route.assets.reduce((inner, asset) => inner + asset.gzipBytes, 0),
+    0,
+  );
+  const once = new Map<string, number>();
+  for (const route of routes) {
+    for (const asset of route.assets) once.set(asset.file, asset.gzipBytes);
+  }
+  const onceOnTheWire = [...once.values()].reduce((sum, bytes) => sum + bytes, 0);
+  return { countedOnEveryRoute, onceOnTheWire, saved: countedOnEveryRoute - onceOnTheWire };
+}
+
+/** Files present on every route, and the bytes saved by shipping each of them once. */
+export function sharedWire(routes: readonly { assets: readonly { file: string; gzipBytes: number }[] }[]): {
+  routes: number;
+  sharedGzip: number;
+  countedOnEveryRoute: number;
+  onceOnTheWire: number;
+  saved: number;
+} {
+  const wire = wireBytes(routes);
+  const seen = new Map<string, { gzipBytes: number; routes: number }>();
+  for (const route of routes) {
+    const files = new Set<string>();
+    for (const asset of route.assets) {
+      if (files.has(asset.file)) continue;
+      files.add(asset.file);
+      const current = seen.get(asset.file) ?? { gzipBytes: asset.gzipBytes, routes: 0 };
+      current.routes += 1;
+      seen.set(asset.file, current);
+    }
+  }
+  let sharedGzip = 0;
+  for (const asset of seen.values()) {
+    if (asset.routes === routes.length) sharedGzip += asset.gzipBytes;
+  }
+  return { routes: routes.length, sharedGzip, ...wire };
+}
+
 export function analyzeBundles(
   routes: readonly RouteBundle[],
   policies: readonly BudgetPolicy[],

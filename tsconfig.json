@@ -19,7 +19,8 @@
       "platform-a11y": ["packages/a11y/src/index.ts"],
       "platform-modules": ["packages/modules/src/index.ts"],
       "platform-ui": ["packages/ui/src/index.ts"],
-      "platform-data": ["packages/data/src/index.ts"]
+      "platform-data": ["packages/data/src/index.ts"],
+      "platform-catalog": ["packages/catalog-product/src/index.ts"]
     }
   },
   "include": ["packages", "apps", "benchmarks", "scripts"]
